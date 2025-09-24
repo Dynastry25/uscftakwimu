@@ -1,0 +1,21 @@
+.header {
+  background-color: #fff;
+  position: fixed;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header .logo {
+  max-width: 100%;
+  height: auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.py-3 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
