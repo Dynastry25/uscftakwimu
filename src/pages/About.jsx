@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import FloatingContact from '../components/FloatingContact/FloatingContact';
 import './CSS/About.css';
+import boko from '../components/assets/boko 1.jpg'
 
 const About = () => {
   const [activeTab, setActiveTab] = useState('about');
@@ -137,7 +138,7 @@ const About = () => {
                 
 
                 <div className="about-card image-card">
-                  <img src="src/components/assets/boko 1.jpg" alt="USCF CCT TAKWIMU Family" />
+                  <img src={boko} alt="USCF CCT TAKWIMU Family" />
                   <div className="image-overlay">
                     <h3>Familia ya USCF</h3>
                     <p>Pamoja tunaweza, pamoja tunashinda</p>

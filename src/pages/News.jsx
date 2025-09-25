@@ -6,6 +6,10 @@ import NewsCard from '../components/NewsCard/NewsCard';
 import FloatingContact from '../components/FloatingContact/FloatingContact';
 import { newsData } from '../data/newsData';
 import './CSS/News.css';
+import News1 from '../components/assets/gradu4.jpg'
+import News2 from '../components/assets/mabibo.jpg'
+
+import pic6 from '../components/assets/lift.jpg'
 
 const News = () => {
   const [filter, setFilter] = useState('all');
@@ -100,7 +104,7 @@ const News = () => {
               {/* Mahafali */}
               <div className="featured-news-card large-card">
                 <div className="news-image-container">
-                  <img src="/src/components/assets/gradu4.jpg" alt="Mahafali" className="news-img" />
+                  <img src={News1} alt="Mahafali" className="news-img" />
                   <div className="news-badge">Matukio</div>
                 </div>
                 <div className="news-content">
@@ -120,7 +124,7 @@ const News = () => {
               {/* Night to Seat at Lord's Feet */}
               <div className="featured-news-card">
                 <div className="news-image-container">
-                  <img src="/src/components/assets/mabibo.jpg" alt="The Night to Seat at Lord's Feet" className="news-img" />
+                  <img src={News2} alt="The Night to Seat at Lord's Feet" className="news-img" />
                   <div className="news-badge">Ibada</div>
                 </div>
                 <div className="news-content">
@@ -139,7 +143,7 @@ const News = () => {
               {/* Lift Your Voice to Jesus */}
               <div className="featured-news-card">
                 <div className="news-image-container">
-                  <img src="/src/components/assets/lift.jpg" alt="Lift Your Voice to Jesus" className="news-img" />
+                  <img src={pic6} alt="Lift Your Voice to Jesus" className="news-img" />
                   <div className="news-badge">Mkesha</div>
                 </div>
                 <div className="news-content">

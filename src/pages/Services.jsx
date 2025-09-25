@@ -6,6 +6,19 @@ import ServiceCard from '../components/ServiceCard/ServiceCard';
 import FloatingContact from '../components/FloatingContact/FloatingContact';
 import './CSS/Services.css';
 
+import pic1 from '../components/assets/Budekwa 1 (2).jpg'
+import pic2 from '../components/assets/nanyamba 2.jpg'
+import pic3 from '../components/assets/nanyamba 3.jpg'
+import gradu1 from '../components/assets/Graduation.jpg'
+import gradu2 from '../components/assets/Graduation 2.jpg'
+import gradu3 from '../components/assets/Graduation 3.jpg'
+import gradu4 from '../components/assets/Graduation 4.jpg'
+import maombi1 from '../components/assets/boko 1.jpg'
+import maombi2 from '../components/assets/maombi .jpg'
+import maombi3 from '../components/assets/nanyamba 3.jpg'
+import maombi4 from '../components/assets/nanyamba 5.jpg'
+import maombi5 from '../components/assets/logo (3).jpg'
+
 const Services = () => {
   const [activeFilter, setActiveFilter] = useState('all');
 
@@ -40,17 +53,17 @@ const Services = () => {
       `,
       missionSlides: [
         {
-          image: "/src/components/assets/budekwa-mission.jpg",
+          image: pic1,
           title: "Budekwa Mission",
           subtitle: "New beginning in Christ"
         },
         {
-          image: "/src/components/assets/Budekwa 1 (2).jpg",
+          image: pic2,
           title: "Nanyamba Mission",
           subtitle: "Till the whole world knows"
         },
         {
-          image: "/src/components/assets/nanyamba 2.jpg",
+          image: pic3,
           title: "Nanyamba Mission",
           subtitle: "Till the whole world knows"
         }
@@ -73,11 +86,11 @@ const Services = () => {
         <p>Pia kuna maombi maalumu ya kuombea taifa na jamii.</p>
       `,
       prayerImages: [
-        "/src/components/assets/boko 1.jpg",
-        "/src/components/assets/maombi .jpg",
-        "/src/components/assets/nanyamba 3.jpg",
-        "/src/components/assets/nanyamba 5.jpg",
-        "/src/components/assets/logo (3).jpg"
+        maombi1,
+        maombi2,
+        maombi3,
+        maombi4,
+        maombi5
       ],
       category: "spiritual"
     },
@@ -87,10 +100,10 @@ const Services = () => {
       icon: "ri-graduation-cap-line",
       description: "Kama USCF, tunafanya mahafali kwa njia ya kipekee kwa ajili ya kuwaenzi wahitimu.",
       graduationSlides: [
-        "/src/components/assets/Graduation.jpg",
-        "/src/components/assets/Graduation 2.jpg",
-        "/src/components/assets/Graduation 3.jpg",
-        "/src/components/assets/Graduation 4.jpg"
+        gradu1,
+        gradu2,
+        gradu3,
+        gradu4
       ],
       features: [
         {

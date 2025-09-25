@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Footer.css';
 
+import logo from '../assets/USCF LOGO.png'
+
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -36,7 +38,7 @@ const Footer = () => {
     address: 'EASTC, Dar es Salaam, Tanzania',
     phone: '+255 755 327 135',
     email: 'uscftakwimu@gmail.com',
-    prayerLine: 'Luka 10:2'
+    prayerLine: 'Conquer, Establish, Flourish'
   };
 
   return (
@@ -48,7 +50,7 @@ const Footer = () => {
             {/* Brand Section */}
             <div className="footer-section brand-section">
               <img 
-                src="/src/components/assets/USCF LOGO.png" 
+                src={logo} 
                 alt="USCF CCT TAKWIMU" 
                 className="footer-logo"
               />
@@ -123,7 +125,7 @@ const Footer = () => {
                 </div>
                 <div className="contact-item1 prayer-line">
                   <i className="ri-prayer-line"></i>
-                  <span>Mstari wa Maombi: {contactInfo.prayerLine}</span>
+                  <span>Theme: {contactInfo.prayerLine}</span>
                 </div>
               </div>
 
@@ -172,8 +174,8 @@ const Footer = () => {
       {/* Quick Action Buttons */}
       <div className="quick-actions">
         <button className="quick-action prayer-btn">
-          <i className="ri-prayer-line"></i>
-          <span>Omba Maombi</span>
+          <i className="ri-shop-line"></i>
+          <span>Duka</span>
         </button>
         <button className="quick-action donate-btn">
           <i className="ri-heart-line"></i>

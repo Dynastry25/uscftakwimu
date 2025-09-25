@@ -1,3 +1,7 @@
+import pic1 from '../components/assets/Budekwa 1 (2).jpg'
+import pic2 from '../components/assets/nanyamba 2.jpg'
+import pic3 from '../components/assets/nanyamba 3.jpg'
+
 export const servicesData = [
   {
     title: "Huduma Za USCF TAKWIMU",
@@ -19,9 +23,9 @@ export const servicesData = [
     icon: "ri-globe-line",
     description: "Umisionari ni kitendo cha kueneza dini Fulani (kikristo) kwa wasio waumini wa dini hiyo.",
     images: [
-      "/pic/Budekwa 1 (2).jpg",
-      "/pic/nanyamba 2.jpg",
-      "/pic/nanyamba 3.jpg"
+      pic1,
+      pic2,
+      pic3
     ],
     additionalContent: "Kabla ya mission, tunashiriki katika maombi ili kujiandaa kiroho. Tunafanya shughuli za visitation na semina mbalimbali. Wakati wa mission, lengo letu kuu ni kufanya mikutano ili kushiriki ujumbe wa matumaini na wokovu."
   },

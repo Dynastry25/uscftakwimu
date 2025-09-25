@@ -234,7 +234,7 @@
   background: rgba(26, 35, 126, 0.1);
 }
 
-.tab-content {
+.tab-content1 {
   padding: 40px;
 }
 
@@ -737,7 +737,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 500px) {
   .welcome-section,
   .quick-cards-section,
   .news-section,
@@ -767,4 +767,133 @@
     margin-right: 0;
     margin-bottom: 15px;
   }
+
+  .schedule-section {
+  padding: 30px 0;
+}
+
+.schedule-header {
+  margin-bottom: 20px;
+}
+
+.circle-icon {
+  margin: 0 auto 20px;
+  font-size: 2rem;
+}
+
+.schedule-header h2 {
+  font-size: 1.5rem;
+}
+
+.schedule-table {
+  gap: 15px;
+  max-width: 100%;
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 0px;
+  transition: all 0.3s ease;
+}
+
+.schedule-day {
+  gap: 10px;
+}
+.schedule-activity {
+  text-align: right;
+}
+
+/* Churches Section */
+.churches-section {
+  padding: 30px 0;
+}
+
+.section-header .section-title{
+  font-size: 1.5rem;
+}
+
+.churches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.church-item {
+  gap: 15px;
+  padding: 6px;
+}
+
+.church-item i {
+  font-size: 1.2rem;
+}
+
+.news-section {
+  padding: 30px 0;
+}
+
+.section-header {
+  margin-bottom: 30px;
+}
+
+.tab-buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+.tab-button {
+  padding: 9px;
+  font-size: .9rem;
+  gap: 5px;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.news-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.view-all-news {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.view-all-btn:hover {
+  background: #283593;
+  transform: translateY(-2px);
+}
+
+/* Documents List */
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.document-item {
+  gap: 10px;
+  padding: 15px 20px;
+}
+
+.document-item:hover {
+  background: #e3f2fd;
+  transform: translateX(5px);
+}
+
+.document-item i:first-child {
+  color: #e91e63;
+  font-size: 1.2rem;
+}
+
+.document-item i:last-child {
+  margin-left: auto;
+  color: #666;
+  font-size: 1.2rem;
+}
+
 }

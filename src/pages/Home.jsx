@@ -8,6 +8,18 @@ import ImageSlider from '../components/ImageSlider/ImageSlider';
 import FloatingContact from '../components/FloatingContact/FloatingContact';
 import NewsCard from '../components/NewsCard/NewsCard';
 import './CSS/Home.css';
+import { newsData } from '../data/newsData';
+
+import boko from '../components/assets/boko 1.jpg'
+import mission from '../components/assets/mission.jpg'
+import slider3 from '../components/assets/mission 4.jpg'
+import event1 from '../components/assets/yombo 2.jpg'
+import event2 from '../components/assets/nanyamba 1.jpg'
+import event3 from '../components/assets/jelly.jpg'
+import event4 from '../components/assets/maombi .jpg'
+import event5 from '../components/assets/kwaya.jpg'
+import event6 from '../components/assets/welcome.jpg'
+import mission2 from '../components/assets/uscf1.png'
 
 const Home = () => {
   const [showMoreContent, setShowMoreContent] = useState(false);
@@ -16,21 +28,21 @@ const Home = () => {
 
   const slides = [
     {
-      image: "/src/components/assets/boko 1.jpg",
+      image: boko,
       title: "Karibu USCF CCT TAKWIMU",
       text: "Jumuiya ya Wanafunzi wa Kikristo inayojenga viongozi wa kesho",
       link: "/registration2",
       linkText: "Jisajili Sasa"
     },
     {
-      image: "/src/components/assets/slider2.jpg",
+      image: slider3,
       title: "Huduma Zetu",
       text: "Ibada, Masomo ya Biblia, Uinjilisti na huduma nyinginezo",
       link: "/services",
       linkText: "Angalia Huduma"
     },
     {
-      image: "/src/components/assets/mission.jpg",
+      image: mission,
       title: "Jiunge Nasi",
       text: "Unakaribishwa kujiunga na familia yetu ya Kikristo",
       link: "/registration",
@@ -69,32 +81,13 @@ const Home = () => {
     }
   ];
 
-  const newsData = [
-    {
-      title: "MAHAFALI YA 4 YA USCF CCT TAKWIMU",
-      date: "June 14, 2025",
-      image: "/src/components/assets/graduation.jpg",
-      excerpt: "Uongozi wa USCF CCT TAKWIMU unapenda kuwataarifu watu wote rasmi mahafali ya awamu ya 4 (2024/2025)...",
-      fullContent: "Uongozi wa USCF CCT TAKWIMU unapenda kuwataarifu watu wote rasmi mahafali ya awamu ya 4 (2024/2025) yatakayofanyika mnamo tarehe 14 June 2025, AICT CHANGANYIKENI kuanzia saa 3 Asubuhi mpaka saa 9 Mchana, Nyote mnakaribishwa",
-      link: "/news/mahafali-4"
-    },
-    {
-      title: "THE NIGHT TO SEAT AT LORD'S FEET",
-      date: "May 23, 2025",
-      image: "/src/components/assets/mabibo.jpg",
-      excerpt: "Je, moyo wako unatamani kuketi miguuni pa Bwana? USCF Mabibo UDSM kupitia Wailing Ladies Ministry...",
-      fullContent: "Je, moyo wako unatamani kuketi miguuni pa Bwana? USCF Mabibo UDSM kupitia Wailing Ladies Ministry inakuletea usiku wa pekee wa ibada na maombi The Night to Seat at the Lord's Feet...",
-      link: "/news/night-to-seat"
-    }
-  ];
-
   const eventsImages = [
-    "/src/components/assets/yombo 2.jpg",
-    "/src/components/assets/nanyamba 1.jpg",
-    "/src/components/assets/jelly.jpg",
-    "/src/components/assets/maombi .jpg",
-    "/src/components/assets/kwaya.jpg",
-    "/src/components/assets/welcome.jpg"
+    event1,
+    event2,
+    event3,
+    event4,
+    event5,
+    event6
   ];
 
   const worshipSchedule = [
@@ -242,7 +235,7 @@ const Home = () => {
                 </button>
               </div>
 
-              <div className="tab-content">
+              <div className="tab-content1">
                 {/* Habari na Matukio Tab */}
                 {activeTab === 'popularPosts' && (
                   <div className="tab-pane active">
@@ -339,7 +332,7 @@ const Home = () => {
           <div className="container">
             <div className="mission-content">
               <div className="mission-image">
-                <img src="/src/components/assets/uscf1.png" alt="USCF Mission" />
+                <img src={mission2} alt="USCF Mission" />
               </div>
               <div className="mission-text">
                 <h2>USCF CCT TAKWIMU UTUME MOROGORO 2026</h2>
