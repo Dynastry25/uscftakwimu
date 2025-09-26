@@ -1,0 +1,76 @@
+/* src/pages/BibleManagement.css */
+.bible-management {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.verses-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.verses-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.verses-table th {
+  background: #f8f9fa;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.verses-table td {
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+}
+
+.verses-table tr:hover {
+  background: #f8f9fa;
+}
+
+.verse-text {
+  max-width: 400px;
+  line-height: 1.4;
+}
+
+.version-badge {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .verses-table {
+    overflow-x: auto;
+  }
+  
+  .verses-table table {
+    min-width: 600px;
+  }
+  
+  .verse-text {
+    max-width: 200px;
+  }
+}

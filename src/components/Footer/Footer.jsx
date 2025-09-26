@@ -53,7 +53,7 @@ const Footer = () => {
                 src={logo} 
                 alt="USCF CCT TAKWIMU" 
                 className="footer-logo"
-              />
+              /> <span className='logo-titl'> USCF CCT TAKWIMU</span>
               <p className="footer-description">
                 Jumuiya ya Wanafunzi wa Kikristo katika Chuo cha Takwimu Mashariki mwa Afrika. 
                 Tunajenga kizazi cha viongozi wa Kikristo wenye imani thabiti.

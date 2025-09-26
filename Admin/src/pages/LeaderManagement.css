@@ -1,0 +1,130 @@
+/* src/pages/LeaderManagement.css */
+.leader-management {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.leaders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.leader-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.leader-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.leader-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.leader-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.leader-card:hover .leader-image img {
+  transform: scale(1.05);
+}
+
+.leader-info {
+  padding: 20px;
+}
+
+.leader-info h3 {
+  margin-bottom: 5px;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.position {
+  color: #667eea;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.department {
+  color: #6c757d;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.tenure {
+  color: #6c757d;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.executive-badge {
+  background: #ffc107;
+  color: #212529;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.leader-actions {
+  padding: 15px 20px;
+  background: #f8f9fa;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.responsibility-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.responsibility-item input {
+  flex: 1;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-responsibility-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .leaders-grid {
+    grid-template-columns: 1fr;
+  }
+}

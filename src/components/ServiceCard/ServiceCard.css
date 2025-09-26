@@ -34,7 +34,7 @@
 /* Service Header */
 .service-header {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
   gap: 20px;
   margin-bottom: 25px;
 }
@@ -44,6 +44,7 @@
   height: 70px;
   border-radius: 50%;
   display: flex;
+  margin: auto;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
@@ -51,20 +52,25 @@
 }
 
 .service-title-section {
-  flex: 1;
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+  margin: auto;
 }
 
 .service-title {
   color: #1a237e;
   font-size: 1.5rem;
-  margin: 0 0 5px 0;
+  margin: auto;
   font-weight: 700;
 }
 
 .service-category {
   background: #f8f9fa;
   color: #666;
-  padding: 4px 12px;
+  padding: auto;
+  text-align: center;
+  margin: auto;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -377,12 +383,36 @@
 
 @media (max-width: 480px) {
   .service-card {
-    margin: 0 10px;
-  }
-  
-  .service-title {
-    font-size: 1.3rem;
-  }
+  padding: 20px;
+}
+
+/* Service Header */
+.service-header {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.service-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.service-title-section {
+  flex: 1;
+  margin: auto;
+}
+
+.service-title {
+  font-size: 1.3rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.service-category {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
   
   .feature-item {
     flex-direction: column;

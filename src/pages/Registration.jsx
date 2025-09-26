@@ -21,16 +21,20 @@ const Registration = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const courses = [
-    'Diploma ya Takwimu',
-    'Diploma ya IT',
-    'Bachelor ya Takwimu',
-    'Bachelor ya IT',
-    'Bachelor ya Uhasibu',
+    'Bachelor Degree in Official Statistics',
+    'Bachelor Degree in Business Statistics and Economics',
+    'Bachelor Degree in Agriculture Statistics and Economics',
+    'Bachelor Degree in Data Science',
+    'Bachelor Degree in Actuarial Statistics',
+    'Basic Technician Certificate in Statistics',
+    'Basic Technician Certificate in Information Technology',
+    'Ordinary Diploma in Statistics',
+    'Ordinary Diploma in Information Technology',
     'Nyingine'
   ];
 
   const years = ['Mwaka 1', 'Mwaka 2', 'Mwaka 3', 'Mwaka 4'];
-  const departments = ['Takwimu', 'Teknolojia ya Habari', 'Uhasibu', 'Usimamizi', 'Nyingine'];
+  const departments = ['Kwaya', 'Uinjilisti', 'Maombi', 'IT', 'Nyingine'];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -220,7 +224,7 @@ const Registration = () => {
                 </div>
               </div>
 
-              <h2 className="form-title">Jisajili kwa TWENZETU MISSION</h2>
+              <h2 className="form-title">Jisajili TWENZETU MISSION</h2>
               
               <form onSubmit={handleSubmit} className="registration-form">
                 {/* Step 1: Personal Information */}

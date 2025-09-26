@@ -136,6 +136,7 @@
 /* Form Styles */
 .form-title {
   color: #1a237e;
+  text-align: center;
   margin-bottom: 0.5rem;
   font-size: 2rem;
 }
@@ -641,4 +642,65 @@ button:disabled {
   .tagline {
     font-size: 1.1rem;
   }
+
+  .registration-hero {
+  padding: 80px 0 60px;
+  }
+
+.registration-hero.variant-2 {
+  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+}
+
+.hero-content h1 {
+  font-size: 1.5rem;
+  margin-bottom: .1rem;
+  font-weight: 700;
+}
+
+.tagline {
+  font-size: .9rem;
+  opacity: 0.9;
+  margin-bottom: .2rem;
+}
+
+.hero-stats {
+  gap: 1rem;
+  margin-top: -2rem;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.178);
+  padding: 5px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.stat i {
+  font-size: 1.2rem;
+}
+
+  .progress-steps {
+  flex-direction: row;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.form-title {
+  font-size: 1.2rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.step span {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 500;
+}
+
 }

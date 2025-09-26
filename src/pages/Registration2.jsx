@@ -19,11 +19,15 @@ const Registration2 = () => {
   const [showSuccess, setShowSuccess] = useState(false);
 
   const courses = [
-    'Diploma ya Takwimu',
-    'Diploma ya IT',
-    'Bachelor ya Takwimu',
-    'Bachelor ya IT',
-    'Bachelor ya Uhasibu',
+    'Bachelor Degree in Official Statistics',
+    'Bachelor Degree in Business Statistics and Economics',
+    'Bachelor Degree in Agriculture Statistics and Economics',
+    'Bachelor Degree in Data Science',
+    'Bachelor Degree in Actuarial Statistics',
+    'Basic Technician Certificate in Statistics',
+    'Basic Technician Certificate in Information Technology',
+    'Ordinary Diploma in Statistics',
+    'Ordinary Diploma in Information Technology',
     'Nyingine'
   ];
 

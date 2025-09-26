@@ -1,0 +1,58 @@
+/* src/pages/MemberManagement.css */
+.member-management {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.members-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.members-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.members-table th {
+  background: #f8f9fa;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.members-table td {
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.members-table tr:hover {
+  background: #f8f9fa;
+}
+
+.member-type-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.member-type-badge.regular { background: #e3f2fd; color: #1976d2; }
+.member-type-badge.active { background: #e8f5e8; color: #2e7d32; }
+.member-type-badge.leader { background: #fff3e0; color: #ef6c00; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .members-table {
+    overflow-x: auto;
+  }
+  
+  .members-table table {
+    min-width: 900px;
+  }
+}

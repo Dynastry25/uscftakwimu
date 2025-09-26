@@ -1,0 +1,84 @@
+/* src/pages/QuizManagement.css */
+.quiz-management {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quizzes-table {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.quizzes-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.quizzes-table th {
+  background: #f8f9fa;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.quizzes-table td {
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.quizzes-table tr:hover {
+  background: #f8f9fa;
+}
+
+.difficulty-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.difficulty-badge.easy { background: #d4edda; color: #155724; }
+.difficulty-badge.medium { background: #fff3cd; color: #856404; }
+.difficulty-badge.hard { background: #f8d7da; color: #721c24; }
+
+.option-input {
+  margin-bottom: 10px;
+}
+
+.option-input:last-child {
+  margin-bottom: 0;
+}
+
+.add-option-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.add-option-btn:hover {
+  background: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quizzes-table {
+    overflow-x: auto;
+  }
+  
+  .quizzes-table table {
+    min-width: 800px;
+  }
+}
