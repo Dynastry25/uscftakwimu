@@ -11,17 +11,40 @@ const BibleManagement = () => {
     version: 'NENO'
   });
 
+  const API_URL = 'http://localhost:5000/api';
+
+  const apiRequest = async (endpoint, options = {}) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     fetchVerses();
   }, []);
 
   const fetchVerses = async () => {
     try {
-      const response = await fetch('/api/bible-verses');
-      const data = await response.json();
-      setVerses(data);
+      const data = await apiRequest('/bible-verses');
+      setVerses(data.verses || data);
     } catch (error) {
       console.error('Error fetching verses:', error);
+      alert('Error loading verses. Please check if backend server is running.');
     }
   };
 
@@ -29,28 +52,30 @@ const BibleManagement = () => {
     e.preventDefault();
     
     try {
-      const url = editingVerse 
-        ? `/api/bible-verses/${editingVerse.id}`
-        : '/api/bible-verses';
-      
-      const method = editingVerse ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        setShowForm(false);
-        setEditingVerse(null);
-        setFormData({ text: '', ref: '', version: 'NENO' });
-        fetchVerses();
+      if (editingVerse) {
+        // UPDATE verse
+        await apiRequest(`/bible-verses/${editingVerse._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(formData),
+        });
+        alert('Verse updated successfully!');
+      } else {
+        // CREATE new verse
+        await apiRequest('/bible-verses', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+        });
+        alert('Verse added successfully!');
       }
+      
+      setShowForm(false);
+      setEditingVerse(null);
+      setFormData({ text: '', ref: '', version: 'NENO' });
+      fetchVerses();
+      
     } catch (error) {
       console.error('Error saving verse:', error);
+      alert('Error saving verse. Please try again.');
     }
   };
 
@@ -67,10 +92,14 @@ const BibleManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this verse?')) {
       try {
-        await fetch(`/api/bible-verses/${id}`, { method: 'DELETE' });
+        await apiRequest(`/bible-verses/${id}`, {
+          method: 'DELETE',
+        });
+        alert('Verse deleted successfully!');
         fetchVerses();
       } catch (error) {
         console.error('Error deleting verse:', error);
+        alert('Error deleting verse. Please try again.');
       }
     }
   };
@@ -171,7 +200,7 @@ const BibleManagement = () => {
           </thead>
           <tbody>
             {verses.map((verse) => (
-              <tr key={verse.id}>
+              <tr key={verse._id}>
                 <td>{verse.text.length > 100 ? verse.text.substring(0, 100) + '...' : verse.text}</td>
                 <td>{verse.ref}</td>
                 <td>{verse.version}</td>
@@ -179,12 +208,14 @@ const BibleManagement = () => {
                   <button 
                     className="btn-edit"
                     onClick={() => handleEdit(verse)}
+                    title="Edit Verse"
                   >
                     <i className="ri-edit-line"></i>
                   </button>
                   <button 
                     className="btn-delete"
-                    onClick={() => handleDelete(verse.id)}
+                    onClick={() => handleDelete(verse._id)}
+                    title="Delete Verse"
                   >
                     <i className="ri-delete-bin-line"></i>
                   </button>

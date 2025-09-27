@@ -10,9 +10,51 @@ const QuizManagement = () => {
     question: '',
     options: ['', '', '', ''],
     answer: '',
+    explanation: '',
     reference: '',
-    level: 'beginner'
+    level: 'beginner',
+    category: 'general'
   });
+
+  const API_URL = 'http://localhost:5000/api';
+
+  const difficultyLevels = [
+    { id: 'beginner', name: 'Beginner' },
+    { id: 'intermediate', name: 'Intermediate' },
+    { id: 'advanced', name: 'Advanced' }
+  ];
+
+  const categories = [
+    'general',
+    'old_testament',
+    'new_testament',
+    'gospels',
+    'miracles',
+    'parables',
+    'prophecy',
+    'wisdom'
+  ];
+
+  const apiRequest = async (endpoint, options = {}) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     fetchQuizzes();
@@ -21,56 +63,102 @@ const QuizManagement = () => {
 
   const fetchQuizzes = async () => {
     try {
-      const response = await fetch('/api/quizzes');
-      const data = await response.json();
-      setQuizzes(data);
+      const data = await apiRequest('/quizzes');
+      setQuizzes(data.quizzes || data);
     } catch (error) {
       console.error('Error fetching quizzes:', error);
+      alert('Error loading quizzes. Please check if backend server is running.');
     }
   };
 
   const fetchLevels = async () => {
     try {
-      const response = await fetch('/api/quiz-levels');
-      const data = await response.json();
-      setLevels(data);
+      // Using static levels for now
+      setLevels(difficultyLevels);
     } catch (error) {
       console.error('Error fetching levels:', error);
+      setLevels(difficultyLevels); // Fallback to static levels
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validate that at least 2 options are filled
+    const filledOptions = formData.options.filter(opt => opt.trim() !== '');
+    if (filledOptions.length < 2) {
+      alert('Please provide at least 2 options');
+      return;
+    }
+
+    // Validate that answer is one of the filled options
+    if (!filledOptions.includes(formData.answer)) {
+      alert('Correct answer must be one of the provided options');
+      return;
+    }
+
     try {
-      const url = editingQuiz 
-        ? `/api/quizzes/${editingQuiz.id}`
-        : '/api/quizzes';
-      
-      const method = editingQuiz ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        setShowForm(false);
-        setEditingQuiz(null);
-        setFormData({
-          question: '',
-          options: ['', '', '', ''],
-          answer: '',
-          reference: '',
-          level: 'beginner'
+      if (editingQuiz) {
+        // UPDATE quiz
+        await apiRequest(`/quizzes/${editingQuiz._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(formData),
         });
-        fetchQuizzes();
+        alert('Quiz question updated successfully!');
+      } else {
+        // CREATE new quiz
+        await apiRequest('/quizzes', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+        });
+        alert('Quiz question added successfully!');
       }
+      
+      setShowForm(false);
+      setEditingQuiz(null);
+      setFormData({
+        question: '',
+        options: ['', '', '', ''],
+        answer: '',
+        explanation: '',
+        reference: '',
+        level: 'beginner',
+        category: 'general'
+      });
+      fetchQuizzes();
+      
     } catch (error) {
       console.error('Error saving quiz:', error);
+      alert('Error saving quiz question. Please try again.');
+    }
+  };
+
+  const handleEdit = (quiz) => {
+    setEditingQuiz(quiz);
+    setFormData({
+      question: quiz.question,
+      options: quiz.options.length === 4 ? quiz.options : [...quiz.options, ...Array(4 - quiz.options.length).fill('')],
+      answer: quiz.answer,
+      explanation: quiz.explanation || '',
+      reference: quiz.reference || '',
+      level: quiz.level,
+      category: quiz.category || 'general'
+    });
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+      try {
+        await apiRequest(`/quizzes/${id}`, {
+          method: 'DELETE',
+        });
+        alert('Question deleted successfully!');
+        fetchQuizzes();
+      } catch (error) {
+        console.error('Error deleting quiz:', error);
+        alert('Error deleting question. Please try again.');
+      }
     }
   };
 
@@ -80,27 +168,36 @@ const QuizManagement = () => {
     setFormData({...formData, options: newOptions});
   };
 
-  const handleEdit = (quiz) => {
-    setEditingQuiz(quiz);
-    setFormData({
-      question: quiz.question,
-      options: quiz.options,
-      answer: quiz.answer,
-      reference: quiz.reference,
-      level: quiz.level
-    });
-    setShowForm(true);
+  const addOption = () => {
+    if (formData.options.length < 6) {
+      setFormData({
+        ...formData,
+        options: [...formData.options, '']
+      });
+    }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this question?')) {
-      try {
-        await fetch(`/api/quizzes/${id}`, { method: 'DELETE' });
-        fetchQuizzes();
-      } catch (error) {
-        console.error('Error deleting quiz:', error);
-      }
+  const removeOption = (index) => {
+    if (formData.options.length > 2) {
+      const newOptions = formData.options.filter((_, i) => i !== index);
+      setFormData({
+        ...formData,
+        options: newOptions,
+        answer: formData.answer === formData.options[index] ? '' : formData.answer
+      });
     }
+  };
+
+  const clearForm = () => {
+    setFormData({
+      question: '',
+      options: ['', '', '', ''],
+      answer: '',
+      explanation: '',
+      reference: '',
+      level: 'beginner',
+      category: 'general'
+    });
   };
 
   return (
@@ -126,13 +223,7 @@ const QuizManagement = () => {
                 onClick={() => {
                   setShowForm(false);
                   setEditingQuiz(null);
-                  setFormData({
-                    question: '',
-                    options: ['', '', '', ''],
-                    answer: '',
-                    reference: '',
-                    level: 'beginner'
-                  });
+                  clearForm();
                 }}
               >
                 <i className="ri-close-line"></i>
@@ -147,21 +238,45 @@ const QuizManagement = () => {
                   onChange={(e) => setFormData({...formData, question: e.target.value})}
                   required
                   rows="3"
+                  placeholder="Enter the quiz question..."
                 />
               </div>
               
               <div className="form-group">
                 <label>Options:</label>
-                {formData.options.map((option, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    value={option}
-                    onChange={(e) => handleOptionChange(index, e.target.value)}
-                    placeholder={`Option ${String.fromCharCode(65 + index)}`}
-                    required
-                  />
-                ))}
+                <div className="options-container">
+                  {formData.options.map((option, index) => (
+                    <div key={index} className="option-input">
+                      <span className="option-label">{String.fromCharCode(65 + index)}</span>
+                      <input
+                        type="text"
+                        value={option}
+                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                        placeholder={`Option ${String.fromCharCode(65 + index)}`}
+                        required={index < 2}
+                      />
+                      {formData.options.length > 2 && (
+                        <button 
+                          type="button"
+                          className="remove-option-btn"
+                          onClick={() => removeOption(index)}
+                          title="Remove option"
+                        >
+                          <i className="ri-close-line"></i>
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  {formData.options.length < 6 && (
+                    <button 
+                      type="button"
+                      className="add-option-btn"
+                      onClick={addOption}
+                    >
+                      <i className="ri-add-line"></i> Add Option
+                    </button>
+                  )}
+                </div>
               </div>
               
               <div className="form-group">
@@ -173,34 +288,65 @@ const QuizManagement = () => {
                 >
                   <option value="">Select correct answer</option>
                   {formData.options.map((option, index) => (
-                    <option key={index} value={option}>
-                      {String.fromCharCode(65 + index)}: {option}
-                    </option>
+                    option.trim() && (
+                      <option key={index} value={option}>
+                        {String.fromCharCode(65 + index)}: {option}
+                      </option>
+                    )
                   ))}
                 </select>
               </div>
-              
+
               <div className="form-group">
-                <label>Bible Reference:</label>
-                <input
-                  type="text"
-                  value={formData.reference}
-                  onChange={(e) => setFormData({...formData, reference: e.target.value})}
+                <label>Explanation (Optional):</label>
+                <textarea
+                  value={formData.explanation}
+                  onChange={(e) => setFormData({...formData, explanation: e.target.value})}
+                  rows="3"
+                  placeholder="Explain why this is the correct answer..."
                 />
               </div>
               
               <div className="form-group">
-                <label>Difficulty Level:</label>
-                <select
-                  value={formData.level}
-                  onChange={(e) => setFormData({...formData, level: e.target.value})}
-                >
-                  {levels.map(level => (
-                    <option key={level.id} value={level.id}>
-                      {level.name}
-                    </option>
-                  ))}
-                </select>
+                <label>Bible Reference (Optional):</label>
+                <input
+                  type="text"
+                  value={formData.reference}
+                  onChange={(e) => setFormData({...formData, reference: e.target.value})}
+                  placeholder="e.g., John 3:16"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Difficulty Level:</label>
+                  <select
+                    value={formData.level}
+                    onChange={(e) => setFormData({...formData, level: e.target.value})}
+                  >
+                    {levels.map(level => (
+                      <option key={level.id} value={level.id}>
+                        {level.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="form-group">
+                  <label>Category:</label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  >
+                    {categories.map(category => (
+                      <option key={category} value={category}>
+                        {category.split('_').map(word => 
+                          word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ')}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
               
               <div className="form-actions">
@@ -213,13 +359,7 @@ const QuizManagement = () => {
                   onClick={() => {
                     setShowForm(false);
                     setEditingQuiz(null);
-                    setFormData({
-                      question: '',
-                      options: ['', '', '', ''],
-                      answer: '',
-                      reference: '',
-                      level: 'beginner'
-                    });
+                    clearForm();
                   }}
                 >
                   Cancel
@@ -236,28 +376,48 @@ const QuizManagement = () => {
             <tr>
               <th>Question</th>
               <th>Level</th>
-              <th>Answer</th>
+              <th>Category</th>
+              <th>Correct Answer</th>
               <th>Reference</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {quizzes.map((quiz) => (
-              <tr key={quiz.id}>
-                <td>{quiz.question.length > 50 ? quiz.question.substring(0, 50) + '...' : quiz.question}</td>
-                <td>{quiz.level}</td>
-                <td>{quiz.answer.length > 20 ? quiz.answer.substring(0, 20) + '...' : quiz.answer}</td>
-                <td>{quiz.reference}</td>
+              <tr key={quiz._id}>
+                <td>
+                  <div className="question-text">
+                    {quiz.question.length > 80 ? quiz.question.substring(0, 80) + '...' : quiz.question}
+                  </div>
+                </td>
+                <td>
+                  <span className={`level-badge ${quiz.level}`}>
+                    {quiz.level}
+                  </span>
+                </td>
+                <td>
+                  <span className="category-badge">
+                    {quiz.category}
+                  </span>
+                </td>
+                <td>
+                  <div className="correct-answer">
+                    {quiz.answer.length > 30 ? quiz.answer.substring(0, 30) + '...' : quiz.answer}
+                  </div>
+                </td>
+                <td>{quiz.reference || '-'}</td>
                 <td className="actions">
                   <button 
                     className="btn-edit"
                     onClick={() => handleEdit(quiz)}
+                    title="Edit Question"
                   >
                     <i className="ri-edit-line"></i>
                   </button>
                   <button 
                     className="btn-delete"
-                    onClick={() => handleDelete(quiz.id)}
+                    onClick={() => handleDelete(quiz._id)}
+                    title="Delete Question"
                   >
                     <i className="ri-delete-bin-line"></i>
                   </button>
@@ -266,6 +426,51 @@ const QuizManagement = () => {
             ))}
           </tbody>
         </table>
+
+        {quizzes.length === 0 && (
+          <div className="no-quizzes">
+            <i className="ri-questionnaire-line"></i>
+            <p>No quiz questions found</p>
+            <button 
+              className="btn-primary"
+              onClick={() => setShowForm(true)}
+            >
+              Add First Question
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Quiz Statistics */}
+      <div className="quiz-stats">
+        <div className="stat-card">
+          <i className="ri-question-answer-line"></i>
+          <div>
+            <h3>{quizzes.length}</h3>
+            <p>Total Questions</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <i className="ri-medal-line"></i>
+          <div>
+            <h3>{quizzes.filter(q => q.level === 'advanced').length}</h3>
+            <p>Advanced</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <i className="ri-star-line"></i>
+          <div>
+            <h3>{quizzes.filter(q => q.level === 'intermediate').length}</h3>
+            <p>Intermediate</p>
+          </div>
+        </div>
+        <div className="stat-card">
+          <i className="ri-user-smile-line"></i>
+          <div>
+            <h3>{quizzes.filter(q => q.level === 'beginner').length}</h3>
+            <p>Beginner</p>
+          </div>
+        </div>
       </div>
     </div>
   );

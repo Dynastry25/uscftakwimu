@@ -18,17 +18,40 @@ const LeaderManagement = () => {
     isExecutive: false
   });
 
+  const API_URL = 'http://localhost:5000/api';
+
+  const apiRequest = async (endpoint, options = {}) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     fetchLeaders();
   }, []);
 
   const fetchLeaders = async () => {
     try {
-      const response = await fetch('/api/leaders');
-      const data = await response.json();
+      const data = await apiRequest('/leaders');
       setLeaders(data);
     } catch (error) {
       console.error('Error fetching leaders:', error);
+      alert('Error loading leaders. Please check if backend server is running.');
     }
   };
 
@@ -36,39 +59,41 @@ const LeaderManagement = () => {
     e.preventDefault();
     
     try {
-      const url = editingLeader 
-        ? `/api/leaders/${editingLeader.id}`
-        : '/api/leaders';
-      
-      const method = editingLeader ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        setShowForm(false);
-        setEditingLeader(null);
-        setFormData({
-          name: '',
-          position: '',
-          department: '',
-          image: '',
-          contact: '',
-          email: '',
-          office: '',
-          responsibilities: [],
-          tenure: '',
-          isExecutive: false
+      if (editingLeader) {
+        // UPDATE leader
+        await apiRequest(`/leaders/${editingLeader._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(formData),
         });
-        fetchLeaders();
+        alert('Leader updated successfully!');
+      } else {
+        // CREATE new leader
+        await apiRequest('/leaders', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+        });
+        alert('Leader added successfully!');
       }
+      
+      setShowForm(false);
+      setEditingLeader(null);
+      setFormData({
+        name: '',
+        position: '',
+        department: '',
+        image: '',
+        contact: '',
+        email: '',
+        office: '',
+        responsibilities: [],
+        tenure: '',
+        isExecutive: false
+      });
+      fetchLeaders();
+      
     } catch (error) {
       console.error('Error saving leader:', error);
+      alert('Error saving leader. Please try again.');
     }
   };
 
@@ -92,10 +117,14 @@ const LeaderManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this leader?')) {
       try {
-        await fetch(`/api/leaders/${id}`, { method: 'DELETE' });
+        await apiRequest(`/leaders/${id}`, {
+          method: 'DELETE',
+        });
+        alert('Leader deleted successfully!');
         fetchLeaders();
       } catch (error) {
         console.error('Error deleting leader:', error);
+        alert('Error deleting leader. Please try again.');
       }
     }
   };
@@ -322,7 +351,7 @@ const LeaderManagement = () => {
 
       <div className="leaders-grid">
         {leaders.map((leader) => (
-          <div key={leader.id} className="leader-card">
+          <div key={leader._id} className="leader-card">
             <div className="leader-image">
               <img src={leader.image || '/images/default-avatar.png'} alt={leader.name} />
             </div>
@@ -337,12 +366,14 @@ const LeaderManagement = () => {
               <button 
                 className="btn-edit"
                 onClick={() => handleEdit(leader)}
+                title="Edit Leader"
               >
                 <i className="ri-edit-line"></i>
               </button>
               <button 
                 className="btn-delete"
-                onClick={() => handleDelete(leader.id)}
+                onClick={() => handleDelete(leader._id)}
+                title="Delete Leader"
               >
                 <i className="ri-delete-bin-line"></i>
               </button>

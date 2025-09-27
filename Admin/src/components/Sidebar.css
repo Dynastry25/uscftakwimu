@@ -10,11 +10,12 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  overflow-x: auto;
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
 .sidebar.open {
-  width: 250px;
+  width: 20%;
 }
 
 .sidebar.closed {
@@ -127,12 +128,12 @@
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar.open {
-    width: 100%;
+    width: 35%;
     z-index: 1001;
   }
   
   .sidebar.closed {
-    width: 0;
+    width: 10%;
     overflow: hidden;
   }
 }

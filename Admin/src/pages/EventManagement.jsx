@@ -18,17 +18,40 @@ const EventManagement = () => {
     status: 'upcoming'
   });
 
+  const API_URL = 'http://localhost:5000/api';
+
+  const apiRequest = async (endpoint, options = {}) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     fetchEvents();
   }, []);
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/events');
-      const data = await response.json();
-      setEvents(data);
+      const data = await apiRequest('/events');
+      setEvents(data.events || data);
     } catch (error) {
       console.error('Error fetching events:', error);
+      alert('Error loading events. Please check if backend server is running.');
     }
   };
 
@@ -36,39 +59,41 @@ const EventManagement = () => {
     e.preventDefault();
     
     try {
-      const url = editingEvent 
-        ? `/api/events/${editingEvent.id}`
-        : '/api/events';
-      
-      const method = editingEvent ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        setShowForm(false);
-        setEditingEvent(null);
-        setFormData({
-          title: '',
-          description: '',
-          startDate: '',
-          endDate: '',
-          location: '',
-          type: 'regular',
-          image: '',
-          registrationRequired: false,
-          maxAttendees: 0,
-          status: 'upcoming'
+      if (editingEvent) {
+        // UPDATE event
+        await apiRequest(`/events/${editingEvent._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(formData),
         });
-        fetchEvents();
+        alert('Event updated successfully!');
+      } else {
+        // CREATE new event
+        await apiRequest('/events', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+        });
+        alert('Event added successfully!');
       }
+      
+      setShowForm(false);
+      setEditingEvent(null);
+      setFormData({
+        title: '',
+        description: '',
+        startDate: '',
+        endDate: '',
+        location: '',
+        type: 'regular',
+        image: '',
+        registrationRequired: false,
+        maxAttendees: 0,
+        status: 'upcoming'
+      });
+      fetchEvents();
+      
     } catch (error) {
       console.error('Error saving event:', error);
+      alert('Error saving event. Please try again.');
     }
   };
 
@@ -77,8 +102,8 @@ const EventManagement = () => {
     setFormData({
       title: event.title,
       description: event.description,
-      startDate: event.startDate,
-      endDate: event.endDate,
+      startDate: event.startDate ? event.startDate.split('.')[0] : '',
+      endDate: event.endDate ? event.endDate.split('.')[0] : '',
       location: event.location,
       type: event.type,
       image: event.image,
@@ -92,26 +117,29 @@ const EventManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
-        await fetch(`/api/events/${id}`, { method: 'DELETE' });
+        await apiRequest(`/events/${id}`, {
+          method: 'DELETE',
+        });
+        alert('Event deleted successfully!');
         fetchEvents();
       } catch (error) {
         console.error('Error deleting event:', error);
+        alert('Error deleting event. Please try again.');
       }
     }
   };
 
   const updateEventStatus = async (event, newStatus) => {
     try {
-      await fetch(`/api/events/${event.id}`, {
+      await apiRequest(`/events/${event._id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({...event, status: newStatus}),
       });
+      alert('Event status updated successfully!');
       fetchEvents();
     } catch (error) {
       console.error('Error updating event status:', error);
+      alert('Error updating event status. Please try again.');
     }
   };
 
@@ -334,7 +362,7 @@ const EventManagement = () => {
               const status = event.status === 'cancelled' ? 'cancelled' : eventStatus;
               
               return (
-                <tr key={event.id}>
+                <tr key={event._id}>
                   <td>{event.title}</td>
                   <td>
                     {new Date(event.startDate).toLocaleDateString()} - {' '}
@@ -354,6 +382,7 @@ const EventManagement = () => {
                     <button 
                       className="btn-edit"
                       onClick={() => handleEdit(event)}
+                      title="Edit Event"
                     >
                       <i className="ri-edit-line"></i>
                     </button>
@@ -361,13 +390,15 @@ const EventManagement = () => {
                       <button 
                         className="btn-cancel"
                         onClick={() => updateEventStatus(event, 'cancelled')}
+                        title="Cancel Event"
                       >
                         <i className="ri-close-circle-line"></i>
                       </button>
                     )}
                     <button 
                       className="btn-delete"
-                      onClick={() => handleDelete(event.id)}
+                      onClick={() => handleDelete(event._id)}
+                      title="Delete Event"
                     >
                       <i className="ri-delete-bin-line"></i>
                     </button>

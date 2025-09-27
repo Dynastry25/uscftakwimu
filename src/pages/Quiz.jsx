@@ -53,48 +53,354 @@ const Quiz = () => {
           options: ["Mauti", "Uzima wa milele", "Baraka", "Hasara"],
           answer: "Mauti",
           reference: "Warumi 6:23"
-        }
-      ]
-    },
-    {
-      name: "Wasifu wa Yesu",
-      difficulty: "Wastani",
-      questions: [
+        },
         {
-          question: "Yesu alizaliwa mahali gani?",
-          options: ["Yerusalemu", "Bethlehemu", "Nazareti", "Yeriko"],
+          question: "Biblia ina Agano ngapi?",
+          options: ["Agano 1", "Agano 3", "Agano 2", "Agano 4"],
+          answer: "Agano 2",
+          reference: "2 Wakorintho 3:6"
+        },
+        {
+          question: "Danieli alitupwa wapi?",
+          options: ["Jangwani", "Shimoni la simba", "Bahari", "Gerezani"],
+          answer: "Shimoni la simba",
+          reference: "Danieli 6:16"
+        },
+        {
+          question: "Mungu alitoa amri ngapi kwa Musa?",
+          options: ["Amri 5", "Amri 7", "Amri 10", "Amri 12"],
+          answer: "Amri 10",
+          reference: "Kutoka 20:1-17"
+        },
+        {
+          question: "Yesu alizaliwa mji gani?",
+          options: ["Nazareti", "Yerusalemu", "Bethlehemu", "Galilaya"],
           answer: "Bethlehemu",
           reference: "Mathayo 2:1"
         },
         {
-          question: "Yesu alifanya mwisho wa miujiza yake ya kwanza?",
+          question: "Yesu alifufuka baada ya siku ngapi?",
+          options: ["Siku 1", "Siku 2", "Siku 3", "Siku 4"],
+          answer: "Siku 3",
+          reference: "Luka 24:7"
+        },
+        {
+          question: "Nani alimkana Yesu mara tatu?",
+          options: ["Yohana", "Petro", "Yakobo", "Andereya"],
+          answer: "Petro",
+          reference: "Mathayo 26:69-75"
+        },
+        {
+          question: "Kitabu cha kwanza cha Biblia ni?",
+          options: ["Kutoka", "Mwanzo", "Walawi", "Yoshua"],
+          answer: "Mwanzo",
+          reference: "Mwanzo 1:1"
+        },
+        {
+          question: "Mfalme gani aliomba hekma kwa Mungu?",
+          options: ["Faro", "Suleimani", "Daudi", "Sauli"],
+          answer: "Suleimani",
+          reference: "1 Wafalme 3:9"
+        },
+        {
+          question: "Nani aliwaokoa Waisraeli kutoka kwa Wafilisti?",
+          options: ["Samsoni", "Gideoni", "Samweli", "Debora"],
+          answer: "Samsoni",
+          reference: "Waamuzi 13-16"
+        },
+        {
+          question: "Yesu alifanya mwujiza wa kwanza wapi?",
           options: ["Kafarnaumu", "Kana", "Yerusalemu", "Yeriko"],
           answer: "Kana",
           reference: "Yohana 2:11"
-        },
-        {
-          question: "Yesu alifufuka siku ya ngapi baada ya kufa?",
-          options: ["Siku ya 1", "Siku ya 3", "Siku ya 7", "Siku ya 40"],
-          answer: "Siku ya 3",
-          reference: "Luka 24:7"
         }
       ]
     },
     {
-      name: "Mafundisho",
+      name: "Msalaba na Kufa",
+      difficulty: "Wastani",
+      questions: [
+        {
+          question: "Yesu alisulubiwa wapi?",
+          options: ["Mlima Sinai", "Kalvari (Golgotha)", "Mlima wa Zeituni", "Bustani ya Getsemane"],
+          answer: "Kalvari (Golgotha)",
+          reference: "Mathayo 27:33"
+        },
+        {
+          question: "Nani aliagiza msalaba wa Yesu?",
+          options: ["Mfalme Herode", "Pontio Pilato", "Kayafa Kuhani Mkuu", "Kaiza Tiberius"],
+          answer: "Pontio Pilato",
+          reference: "Mathayo 27:26"
+        },
+        {
+          question: "Yesu alishtakiwa kwa nini?",
+          options: ["Wizi", "Kumtukana Mungu", "Uasi dhidi ya Roma", "Kuvunja Sabato"],
+          answer: "Kumtukana Mungu",
+          reference: "Mathayo 26:65"
+        },
+        {
+          question: "Yuda alimsaliti Yesu kwa fedha ngapi?",
+          options: ["Denari 20", "Denari 30", "Denari 40", "Denari 50"],
+          answer: "Denari 30",
+          reference: "Mathayo 26:15"
+        },
+        {
+          question: "Askari walimvisha Yesu nini kabla ya kumsulibisha?",
+          options: ["Taji ya dhahabu", "Taji ya miiba", "Kitambaa cha kitani", "Kofia ya kijeshi"],
+          answer: "Taji ya miiba",
+          reference: "Mathayo 27:29"
+        },
+        {
+          question: "Nani alimsaidia Yesu kubeba msalaba?",
+          options: ["Simoni wa Kurene", "Yosefu wa Arimathea", "Nikodemo", "Baraba"],
+          answer: "Simoni wa Kurene",
+          reference: "Mathayo 27:32"
+        },
+        {
+          question: "Ilikuwaje juu ya msalaba wa Yesu?",
+          options: ["Nabii wa Nazareti", "Mfalme wa Wayahudi", "Anajidai kuwa Masihi", "Adui wa Roma"],
+          answer: "Mfalme wa Wayahudi",
+          reference: "Mathayo 27:37"
+        },
+        {
+          question: "Ni yupi mwizi aliyetubu alipokuwa amesulubiwa kando ya Yesu?",
+          options: ["Gestas", "Dismas", "Baraba", "Yuda"],
+          answer: "Dismas",
+          reference: "Luka 23:39-43"
+        },
+        {
+          question: "Ni tukio gani la kimiujiza lilitokea Yesu alipokufa?",
+          options: ["Kupatwa kwa jua", "Paranda ya hekalu ikachanika", "Tetemeko la ardhi", "Yote hapo juu"],
+          answer: "Yote hapo juu",
+          reference: "Mathayo 27:45, 51-52"
+        },
+        {
+          question: "Nani aliomba mwili wa Yesu kwa ajili ya kuzika?",
+          options: ["Nikodemo", "Yosefu wa Arimathea", "Petro", "Yohana Mbatizaji"],
+          answer: "Yosefu wa Arimathea",
+          reference: "Mathayo 27:57-58"
+        },
+        {
+          question: "Yesu alisema nini msalabani: 'Eli, Eli, lama sabachthani' inamaanisha?",
+          options: ["Baba nimtie mkono", "Baba nimekamilisha", "Mungu wangu, kwa nini umeniacha", "Msamaha wao"],
+          answer: "Mungu wangu, kwa nini umeniacha",
+          reference: "Mathayo 27:46"
+        },
+        {
+          question: "Askari walichukua nini kutoka kwa Yesu msalabani?",
+          options: ["Mavazi yake", "Mikanda yake", "Viatu vyake", "Kamba zake"],
+          answer: "Mavazi yake",
+          reference: "Yohana 19:23-24"
+        },
+        {
+          question: "Yesu aliwapa nini mama yake na Yohana msalabani?",
+          options: ["Amri ya kuwaambatana", "Baraka ya mwisho", "Ushauri wa kuondoka", "Ahadi ya kufufuka"],
+          answer: "Amri ya kuwaambatana",
+          reference: "Yohana 19:26-27"
+        },
+        {
+          question: "Mto gani ulitoka kwa Yesu alipochomwa mkuki?",
+          options: ["Maji na damu", "Maji tu", "Damu tu", "Mafuta na maji"],
+          answer: "Maji na damu",
+          reference: "Yohana 19:34"
+        },
+        {
+          question: "Yesu alikufa saa ngapi?",
+          options: ["Saa tisa", "Saa sita", "Saa tatu", "Saa kumi na mbili"],
+          answer: "Saa tisa",
+          reference: "Mathayo 27:45-50"
+        }
+      ]
+    },
+    {
+      name: "Kufufuka na Kupaa",
       difficulty: "Ngumu",
       questions: [
         {
-          question: "Ni wapi Agano Jipya linaandika 'Mungu ni upendo'?",
-          options: ["1 Yohana 4:8", "Warumi 5:8", "Yohana 3:16", "1 Wakorintho 13:4"],
-          answer: "1 Yohana 4:8",
-          reference: "1 Yohana 4:8"
+          question: "Kaburi la Yesu lilifungwa vipi?",
+          options: ["Kwa mlango wa mbao", "Kwa jiwe kubwa", "Kwa walinzi Waroma", "Yote hapo juu"],
+          answer: "Kwa jiwe kubwa",
+          reference: "Mathayo 27:60"
         },
         {
-          question: "Nani aliandika 'Imetimiza wakati, na ufalme wa Mungu umekaribiu'?",
-          options: ["Yesu", "Yohana Mbatizaji", "Petro", "Paulo"],
-          answer: "Yesu",
-          reference: "Marko 1:15"
+          question: "Yesu alifufuka siku gani?",
+          options: ["Sabato (Jumamosi)", "Siku ya tatu (Jumapili)", "Siku ya nne (Jumatatu)", "Siku ya saba"],
+          answer: "Siku ya tatu (Jumapili)",
+          reference: "Mathayo 28:1"
+        },
+        {
+          question: "Nani walikuwa mashahidi wa kwanza wa kaburi lililokuwa wazi?",
+          options: ["Petro na Yohana", "Maria Magdalena na wanawake wengine", "Walinzi Waroma", "Mafarisayo"],
+          answer: "Maria Magdalena na wanawake wengine",
+          reference: "Mathayo 28:1"
+        },
+        {
+          question: "Ni yupi mwanafunzi aliyeshuku kufufuka kwa Yesu hadi akaona vidonda vyake?",
+          options: ["Thoma", "Andereya", "Mathayo", "Filipo"],
+          answer: "Thoma",
+          reference: "Yohana 20:24-29"
+        },
+        {
+          question: "Yesu aliwaonekana kwa wanafunzi wake kwa siku ngapi baada ya kufufuka?",
+          options: ["Siku 3", "Siku 7", "Siku 40", "Siku 100"],
+          answer: "Siku 40",
+          reference: "Matendo 1:3"
+        },
+        {
+          question: "Yesu alipaa mbinguni wapi?",
+          options: ["Mlima Sinai", "Mlima wa Zeituni", "Bustani ya Getsemane", "Bahari ya Galilaya"],
+          answer: "Mlima wa Zeituni",
+          reference: "Matendo 1:9-12"
+        },
+        {
+          question: "Yesu alikula nini baada ya kufufuka kuthibitisha kuwa sio kivuli?",
+          options: ["Mkate na divai", "Samaki na asali", "Manna", "Nyama ya kondoo"],
+          answer: "Samaki na asali",
+          reference: "Luka 24:42-43"
+        },
+        {
+          question: "Nani walilinda kaburi la Yesu kuzuia kuibwa mwili wake?",
+          options: ["Makuhani Wayahudi", "Walinzi Waroma", "Walindi wa hekalu", "Wanafunzi"],
+          answer: "Walinzi Waroma",
+          reference: "Mathayo 27:65-66"
+        },
+        {
+          question: "Ni nabii gani wa Agano la Kale aliyeabiri kufufuka kwa Yesu?",
+          options: ["Isaya", "Yona", "Danieli", "Daudi"],
+          answer: "Yona",
+          reference: "Mathayo 12:40"
+        },
+        {
+          question: "Malaika aliwaambia nini wanawake walipofika kaburini?",
+          options: ["Analala", "Yuko hapa; amefufuka!", "Nendeni mwaambie Mafarisayo", "Subirieni hapa kwa ajili ya kurudi kwake"],
+          answer: "Yuko hapa; amefufuka!",
+          reference: "Mathayo 28:6"
+        },
+        {
+          question: "Yesu aliwapa wanafunzi wake amri gani mwisho kabla ya kupaa mbinguni?",
+          options: ["Amri ya kuinjilisha", "Amri ya kujenga kanisa", "Amri ya kuandika Biblia", "Amri ya kufanya miujiza"],
+          answer: "Amri ya kuinjilisha",
+          reference: "Matendo 1:8"
+        },
+        {
+          question: "Wanafunzi wangapi waliomuona Yesu alipopaa mbinguni?",
+          options: ["Wote 12", "11 tu", "10 tu", "Wachache tu"],
+          answer: "11 tu",
+          reference: "Matendo 1:9-11"
+        },
+        {
+          question: "Yesu aliwahidi nini wanafunzi wake kabla ya kupaa?",
+          options: ["Kurudi haraka", "Kutuma Roho Mtakatifu", "Kuwapa ufalme", "Kuwapa utajiri"],
+          answer: "Kutuma Roho Mtakatifu",
+          reference: "Matendo 1:4-5"
+        },
+        {
+          question: "Yesu alimwambia nini Maria Magdalena alipomwona baada ya kufufuka?",
+          options: ["Usiniguse", "Nenda uwaambie ndugu zangu", "Subiri hapa", "Toka hapa"],
+          answer: "Usiniguse",
+          reference: "Yohana 20:17"
+        },
+        {
+          question: "Yesu aliwaonekana kwa wanafunzi wake wapi walipokuwa wamefunika mlango?",
+          options: ["Uwanjani", "Sokoni", "Chumbani", "Mlimani"],
+          answer: "Chumbani",
+          reference: "Yohana 20:19"
+        }
+      ]
+    },
+    {
+      name: "Agano la Kale",
+      difficulty: "Bingwa",
+      questions: [
+        {
+          question: "Nani alijenga hekalu la kwanza la Mungu katika Yerusalemu?",
+          options: ["Suleimani", "Daudi", "Musa", "Eliya"],
+          answer: "Suleimani",
+          reference: "1 Wafalme 6:1"
+        },
+        {
+          question: "Kwa miaka mingapi Waisraeli walikaa jangwani baada ya kutoka Misri?",
+          options: ["Miaka 20", "Miaka 30", "Miaka 40", "Miaka 50"],
+          answer: "Miaka 40",
+          reference: "Kumbukumbu la Torati 8:2"
+        },
+        {
+          question: "Nani aliandika Zaburi nyingi katika Biblia?",
+          options: ["Suleimani", "Daudi", "Isaya", "Yeremia"],
+          answer: "Daudi",
+          reference: "Zaburi 73:20"
+        },
+        {
+          question: "Ni agano gani lililofanywa kati ya Mungu na Waisraeli katika Mlima Sinai?",
+          options: ["Agano la Kale", "Agano Jipya", "Agano la Musa", "Agano la Sheria"],
+          answer: "Agano la Sheria",
+          reference: "Kutoka 24:7-8"
+        },
+        {
+          question: "Nani alikuwa mwanamke wa kwanza katika Biblia?",
+          options: ["Sara", "Rehema", "Hawa", "Eva"],
+          answer: "Hawa",
+          reference: "Mwanzo 3:20"
+        },
+        {
+          question: "Mtu gani aliandika vitabu vingi zaidi katika Agano la Kale?",
+          options: ["Musa", "Daudi", "Isaya", "Yeremia"],
+          answer: "Musa",
+          reference: "Kutoka 24:4"
+        },
+        {
+          question: "Nani aliomba mvua isimame miaka 3 na nusu?",
+          options: ["Eliya", "Elisha", "Isaya", "Yeremia"],
+          answer: "Eliya",
+          reference: "1 Wafalme 17:1"
+        },
+        {
+          question: "Mtu gani alitembea na Mungu na hakufa?",
+          options: ["Henoki", "Eliya", "Musa", "Abrahamu"],
+          answer: "Henoki",
+          reference: "Mwanzo 5:24"
+        },
+        {
+          question: "Nani aliwaokoa Waisraeli kutoka kwa Wamidiani?",
+          options: ["Samsoni", "Gideoni", "Samweli", "Debora"],
+          answer: "Gideoni",
+          reference: "Waamuzi 6:11-16"
+        },
+        {
+          question: "Mtu gani aliandika kitabu cha Ayubu?",
+          options: ["Ayubu mwenyewe", "Musa", "Suleimani", "Haijulikani"],
+          answer: "Haijulikani",
+          reference: "Ayubu 1:1"
+        },
+        {
+          question: "Nani alikuwa kuhani mkuu wa kwanza wa Israeli?",
+          options: ["Haruni", "Musa", "Eleazari", "Itamari"],
+          answer: "Haruni",
+          reference: "Kutoka 28:1"
+        },
+        {
+          question: "Mtu gani aliwaambia Waisraeli 'Mchague leo mtakayemtumikia'?",
+          options: ["Yoshua", "Musa", "Samweli", "Daudi"],
+          answer: "Yoshua",
+          reference: "Yoshua 24:15"
+        },
+        {
+          question: "Nani aliwaambia Waisraeli 'Usiogope, maana Bwana atapambana nanyi'?",
+          options: ["Musa", "Yoshua", "Samweli", "Isaya"],
+          answer: "Musa",
+          reference: "Kutoka 14:13-14"
+        },
+        {
+          question: "Mtu gani alikuwa nabii mwenye nguvu zaidi katika Agano la Kale?",
+          options: ["Musa", "Eliya", "Isaya", "Yeremia"],
+          answer: "Musa",
+          reference: "Kumbukumbu la Torati 34:10-12"
+        },
+        {
+          question: "Nani aliandika 'Hofu ya Bwana ndiyo mwanzo wa hekima'?",
+          options: ["Suleimani", "Daudi", "Ayubu", "Musa"],
+          answer: "Suleimani",
+          reference: "Mithali 9:10"
         }
       ]
     }

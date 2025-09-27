@@ -8,13 +8,48 @@ const NewsManagement = () => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
+    excerpt: '',
     image: '',
     author: '',
     category: 'general',
     tags: [],
     isPublished: false,
-    publishDate: ''
+    publishDate: new Date().toISOString().split('T')[0]
   });
+
+  const API_URL = 'http://localhost:5000/api';
+
+  const categories = [
+    'general',
+    'spiritual',
+    'academic',
+    'events',
+    'announcements',
+    'missions',
+    'graduation',
+    'prayer'
+  ];
+
+  const apiRequest = async (endpoint, options = {}) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     fetchNews();
@@ -22,49 +57,58 @@ const NewsManagement = () => {
 
   const fetchNews = async () => {
     try {
-      const response = await fetch('/api/news');
-      const data = await response.json();
-      setNews(data);
+      const data = await apiRequest('/news');
+      setNews(data.news || data);
     } catch (error) {
       console.error('Error fetching news:', error);
+      alert('Error loading news. Please check if backend server is running.');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Auto-generate excerpt if not provided
+    const newsData = {
+      ...formData,
+      excerpt: formData.excerpt || formData.content.substring(0, 150) + '...'
+    };
+
     try {
-      const url = editingNews 
-        ? `/api/news/${editingNews.id}`
-        : '/api/news';
-      
-      const method = editingNews ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        setShowForm(false);
-        setEditingNews(null);
-        setFormData({
-          title: '',
-          content: '',
-          image: '',
-          author: '',
-          category: 'general',
-          tags: [],
-          isPublished: false,
-          publishDate: ''
+      if (editingNews) {
+        // UPDATE news
+        await apiRequest(`/news/${editingNews._id}`, {
+          method: 'PUT',
+          body: JSON.stringify(newsData),
         });
-        fetchNews();
+        alert('News updated successfully!');
+      } else {
+        // CREATE new news
+        await apiRequest('/news', {
+          method: 'POST',
+          body: JSON.stringify(newsData),
+        });
+        alert('News added successfully!');
       }
+      
+      setShowForm(false);
+      setEditingNews(null);
+      setFormData({
+        title: '',
+        content: '',
+        excerpt: '',
+        image: '',
+        author: '',
+        category: 'general',
+        tags: [],
+        isPublished: false,
+        publishDate: new Date().toISOString().split('T')[0]
+      });
+      fetchNews();
+      
     } catch (error) {
       console.error('Error saving news:', error);
+      alert('Error saving news. Please try again.');
     }
   };
 
@@ -73,12 +117,13 @@ const NewsManagement = () => {
     setFormData({
       title: newsItem.title,
       content: newsItem.content,
+      excerpt: newsItem.excerpt || '',
       image: newsItem.image,
       author: newsItem.author,
       category: newsItem.category,
       tags: newsItem.tags || [],
       isPublished: newsItem.isPublished,
-      publishDate: newsItem.publishDate || ''
+      publishDate: newsItem.publishDate ? newsItem.publishDate.split('T')[0] : new Date().toISOString().split('T')[0]
     });
     setShowForm(true);
   };
@@ -86,10 +131,14 @@ const NewsManagement = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this news?')) {
       try {
-        await fetch(`/api/news/${id}`, { method: 'DELETE' });
+        await apiRequest(`/news/${id}`, {
+          method: 'DELETE',
+        });
+        alert('News deleted successfully!');
         fetchNews();
       } catch (error) {
         console.error('Error deleting news:', error);
+        alert('Error deleting news. Please try again.');
       }
     }
   };
@@ -98,16 +147,15 @@ const NewsManagement = () => {
     const newStatus = !newsItem.isPublished;
     
     try {
-      await fetch(`/api/news/${newsItem.id}`, {
+      await apiRequest(`/news/${newsItem._id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({...newsItem, isPublished: newStatus}),
       });
+      alert(`News ${newStatus ? 'published' : 'unpublished'} successfully!`);
       fetchNews();
     } catch (error) {
       console.error('Error updating news status:', error);
+      alert('Error updating news status. Please try again.');
     }
   };
 
@@ -125,6 +173,16 @@ const NewsManagement = () => {
   const removeTag = (index) => {
     const newTags = formData.tags.filter((_, i) => i !== index);
     setFormData({...formData, tags: newTags});
+  };
+
+  const handleContentChange = (e) => {
+    const content = e.target.value;
+    setFormData({
+      ...formData,
+      content: content,
+      // Auto-generate excerpt if content changes and excerpt is empty
+      excerpt: formData.excerpt || content.substring(0, 150) + '...'
+    });
   };
 
   return (
@@ -153,12 +211,13 @@ const NewsManagement = () => {
                   setFormData({
                     title: '',
                     content: '',
+                    excerpt: '',
                     image: '',
                     author: '',
                     category: 'general',
                     tags: [],
                     isPublished: false,
-                    publishDate: ''
+                    publishDate: new Date().toISOString().split('T')[0]
                   });
                 }}
               >
@@ -181,10 +240,22 @@ const NewsManagement = () => {
                 <label>Content:</label>
                 <textarea
                   value={formData.content}
-                  onChange={(e) => setFormData({...formData, content: e.target.value})}
+                  onChange={handleContentChange}
                   required
                   rows="6"
+                  placeholder="Write your news content here..."
                 />
+              </div>
+
+              <div className="form-group">
+                <label>Excerpt:</label>
+                <textarea
+                  value={formData.excerpt}
+                  onChange={(e) => setFormData({...formData, excerpt: e.target.value})}
+                  rows="3"
+                  placeholder="Short summary of the news (auto-generated if empty)"
+                />
+                <small>Auto-generates if left empty (first 150 characters of content)</small>
               </div>
               
               <div className="form-row">
@@ -194,6 +265,7 @@ const NewsManagement = () => {
                     type="text"
                     value={formData.author}
                     onChange={(e) => setFormData({...formData, author: e.target.value})}
+                    required
                   />
                 </div>
                 
@@ -203,11 +275,11 @@ const NewsManagement = () => {
                     value={formData.category}
                     onChange={(e) => setFormData({...formData, category: e.target.value})}
                   >
-                    <option value="general">General</option>
-                    <option value="spiritual">Spiritual</option>
-                    <option value="academic">Academic</option>
-                    <option value="events">Events</option>
-                    <option value="announcements">Announcements</option>
+                    {categories.map(category => (
+                      <option key={category} value={category}>
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -250,9 +322,10 @@ const NewsManagement = () => {
                 <div className="form-group">
                   <label>Publish Date:</label>
                   <input
-                    type="datetime-local"
+                    type="date"
                     value={formData.publishDate}
                     onChange={(e) => setFormData({...formData, publishDate: e.target.value})}
+                    required
                   />
                 </div>
                 
@@ -281,12 +354,13 @@ const NewsManagement = () => {
                     setFormData({
                       title: '',
                       content: '',
+                      excerpt: '',
                       image: '',
                       author: '',
                       category: 'general',
                       tags: [],
                       isPublished: false,
-                      publishDate: ''
+                      publishDate: new Date().toISOString().split('T')[0]
                     });
                   }}
                 >
@@ -312,32 +386,44 @@ const NewsManagement = () => {
           </thead>
           <tbody>
             {news.map((newsItem) => (
-              <tr key={newsItem.id}>
-                <td>{newsItem.title}</td>
-                <td>{newsItem.category}</td>
+              <tr key={newsItem._id}>
+                <td>
+                  <div className="news-title">
+                    {newsItem.title}
+                    {newsItem.featured && <span className="featured-badge">Featured</span>}
+                  </div>
+                </td>
+                <td>
+                  <span className="category-badge">{newsItem.category}</span>
+                </td>
                 <td>{newsItem.author}</td>
                 <td>
                   <span className={`status-badge ${newsItem.isPublished ? 'published' : 'draft'}`}>
                     {newsItem.isPublished ? 'Published' : 'Draft'}
                   </span>
                 </td>
-                <td>{newsItem.publishDate ? new Date(newsItem.publishDate).toLocaleDateString() : '-'}</td>
+                <td>
+                  {newsItem.publishDate ? new Date(newsItem.publishDate).toLocaleDateString() : 'Not set'}
+                </td>
                 <td className="actions">
                   <button 
                     className="btn-edit"
                     onClick={() => handleEdit(newsItem)}
+                    title="Edit News"
                   >
                     <i className="ri-edit-line"></i>
                   </button>
                   <button 
                     className={`btn-status ${newsItem.isPublished ? 'unpublish' : 'publish'}`}
                     onClick={() => togglePublish(newsItem)}
+                    title={newsItem.isPublished ? 'Unpublish' : 'Publish'}
                   >
                     <i className={newsItem.isPublished ? 'ri-eye-off-line' : 'ri-eye-line'}></i>
                   </button>
                   <button 
                     className="btn-delete"
-                    onClick={() => handleDelete(newsItem.id)}
+                    onClick={() => handleDelete(newsItem._id)}
+                    title="Delete News"
                   >
                     <i className="ri-delete-bin-line"></i>
                   </button>
@@ -346,6 +432,19 @@ const NewsManagement = () => {
             ))}
           </tbody>
         </table>
+
+        {news.length === 0 && (
+          <div className="no-news">
+            <i className="ri-newspaper-line"></i>
+            <p>No news articles found</p>
+            <button 
+              className="btn-primary"
+              onClick={() => setShowForm(true)}
+            >
+              Add First News Article
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

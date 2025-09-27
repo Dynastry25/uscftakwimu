@@ -121,6 +121,75 @@ const slides = [
     setChurches(churchesData);
   }, []);
 
+    const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState({
+    submitting: false,
+    submitted: false,
+    error: false,
+    message: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormStatus({ submitting: true, submitted: false, error: false, message: '' });
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/uscftakwimu@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: 'Ujumbe Mpya Kutoka kwa USCF TAKWIMU',
+          _template: 'table',
+          _captcha: 'false'
+        })
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setFormStatus({
+          submitting: false,
+          submitted: true,
+          error: false,
+          message: 'Ujumbe wako umetumwa kikamilifu! Tutawasiliana nawe hivi karibuni.'
+        });
+        setFormData({ name: '', email: '', message: '' });
+        
+        // Futa message baada ya sekunde 5
+        setTimeout(() => {
+          setFormStatus(prev => ({ ...prev, message: '' }));
+        }, 5000);
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      setFormStatus({
+        submitting: false,
+        submitted: false,
+        error: true,
+        message: 'Hitilafu imetokea. Tafadhali jaribu tena baadaye.'
+      });
+    }
+  };
+
   return (
     <div className="home-page">
       <Header />
@@ -409,46 +478,86 @@ const slides = [
         </section>
 
         {/* Contact Form */}
-        <section className="contact-section">
-          <div className="container">
-            <div className="contact-form-container">
-              <h2>Maoni / Salamu</h2>
-              <p>Tumepoke maoni yako na tutafurahi kukujibu</p>
-              
-              <form className="contact-form">
-                <div className="form-row">
-                  <div className="form-group">
-                    <input 
-                      type="text" 
-                      name="name" 
-                      placeholder="Jina lako" 
-                      required 
-                    />
-                  </div>
-                  <div className="form-group">
-                    <input 
-                      type="email" 
-                      name="email" 
-                      placeholder="Barua pepe yako" 
-                      required 
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <textarea 
-                    name="message" 
-                    rows="5" 
-                    placeholder="Ujumbe wako..." 
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" className="submit-btn">
-                  Tuma Ujumbe <i className="ri-send-plane-line"></i>
-                </button>
-              </form>
+ <section className="contact-section">
+      <div className="container">
+        <div className="contact-form-container">
+          <h2>Maoni / Salamu</h2>
+          <p>Tuandikie maoni/salamu yako na tutafurahi kukujibu</p>
+          
+          {/* Success/Error Message */}
+          {formStatus.message && (
+            <div className={`form-message ${formStatus.submitted ? 'success' : ''} ${formStatus.error ? 'error' : ''}`}>
+              <i className={`ri-${formStatus.submitted ? 'check' : 'error-warning'}-line`}></i>
+              <span>{formStatus.message}</span>
+              <button 
+                className="close-message" 
+                onClick={() => setFormStatus(prev => ({ ...prev, message: '' }))}
+              >
+                <i className="ri-close-line"></i>
+              </button>
             </div>
-          </div>
-        </section>
+          )}
+          
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_subject" value="Ujumbe Mpya Kutoka kwa USCF TAKWIMU" />
+            <input type="hidden" name="_template" value="table" />
+            
+            <div className="form-row">
+              <div className="form-group">
+                <input 
+                  type="text" 
+                  name="name" 
+                  placeholder="Jina lako" 
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required 
+                  disabled={formStatus.submitting}
+                />
+              </div>
+              <div className="form-group">
+                <input 
+                  type="email" 
+                  name="email" 
+                  placeholder="Barua pepe yako" 
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required 
+                  disabled={formStatus.submitting}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <textarea 
+                name="message" 
+                rows="5" 
+                placeholder="Ujumbe wako..." 
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+                disabled={formStatus.submitting}
+              ></textarea>
+            </div>
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={formStatus.submitting}
+            >
+              {formStatus.submitting ? (
+                <>
+                  <i className="ri-loader-4-line spin"></i>
+                  Inatumwa...
+                </>
+              ) : (
+                <>
+                  Tuma Ujumbe <i className="ri-send-plane-line"></i>
+                </>
+              )}
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
       </main>
 
       <Footer />

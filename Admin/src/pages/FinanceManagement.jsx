@@ -9,7 +9,7 @@ const FinanceManagement = () => {
   const [editingRecord, setEditingRecord] = useState(null);
   const [formData, setFormData] = useState({
     type: 'income',
-    date: '',
+    date: new Date().toISOString().split('T')[0],
     name: '',
     paymentMethod: 'M-pesa',
     amount: '',
@@ -18,11 +18,34 @@ const FinanceManagement = () => {
     transactionFee: '0'
   });
 
+  const API_URL = 'http://localhost:5000/api';
+
   const paymentMethods = ['M-pesa', 'Mix by Yas', 'Bank', 'Cash'];
   const events = [
     'Mahafali', 'Misheni', 'Ibada', 'Mafundisho', 'Matengenezo', 
     'Vifaa', 'Mshahara', 'Usafiri', 'Nyingine'
   ];
+
+  const apiRequest = async (endpoint, options = {}) => {
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers,
+        },
+        ...options,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     fetchFinanceData();
@@ -30,63 +53,69 @@ const FinanceManagement = () => {
 
   const fetchFinanceData = async () => {
     try {
-      // Simulate API calls
-      const incomeResponse = await fetch('/api/finance/income');
-      const expenseResponse = await fetch('/api/finance/expenses');
+      const incomeData = await apiRequest('/finance?type=income');
+      const expenseData = await apiRequest('/finance?type=expense');
       
-      const incomeData = await incomeResponse.json();
-      const expenseData = await expenseResponse.json();
-      
-      setIncomeRecords(incomeData);
-      setExpenseRecords(expenseData);
+      setIncomeRecords(incomeData.records || incomeData);
+      setExpenseRecords(expenseData.records || expenseData);
     } catch (error) {
       console.error('Error fetching finance data:', error);
+      alert('Error loading finance data. Please check if backend server is running.');
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    try {
-      const url = editingRecord 
-        ? `/api/finance/${editingRecord.id}`
-        : '/api/finance';
-      
-      const method = editingRecord ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  try {
+    const recordData = {
+      ...formData,
+      amount: parseFloat(formData.amount),
+      transactionFee: parseFloat(formData.transactionFee),
+      recordedBy: 'Admin' // Add required field
+    };
+
+    if (editingRecord) {
+      // UPDATE record
+      await apiRequest(`/finance/${editingRecord._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(recordData),
       });
-      
-      if (response.ok) {
-        setShowForm(false);
-        setEditingRecord(null);
-        setFormData({
-          type: 'income',
-          date: '',
-          name: '',
-          paymentMethod: 'M-pesa',
-          amount: '',
-          event: '',
-          reason: '',
-          transactionFee: '0'
-        });
-        fetchFinanceData();
-      }
-    } catch (error) {
-      console.error('Error saving finance record:', error);
+      alert('Record updated successfully!');
+    } else {
+      // CREATE new record
+      await apiRequest('/finance', {
+        method: 'POST',
+        body: JSON.stringify(recordData),
+      });
+      alert('Record added successfully!');
     }
-  };
+    
+    setShowForm(false);
+    setEditingRecord(null);
+    setFormData({
+      type: 'income',
+      date: new Date().toISOString().split('T')[0],
+      name: '',
+      paymentMethod: 'M-pesa',
+      amount: '',
+      event: 'Nyingine', // Set default value
+      reason: '',
+      transactionFee: '0'
+    });
+    fetchFinanceData();
+    
+  } catch (error) {
+    console.error('Error saving finance record:', error);
+    alert('Error saving finance record. Please check the data and try again.');
+  }
+};
 
   const handleEdit = (record, type) => {
     setEditingRecord(record);
     setFormData({
       type: type,
-      date: record.date,
+      date: record.date ? record.date.split('T')[0] : new Date().toISOString().split('T')[0],
       name: record.name,
       paymentMethod: record.paymentMethod,
       amount: record.amount,
@@ -100,10 +129,14 @@ const FinanceManagement = () => {
   const handleDelete = async (id, type) => {
     if (window.confirm('Are you sure you want to delete this record?')) {
       try {
-        await fetch(`/api/finance/${id}`, { method: 'DELETE' });
+        await apiRequest(`/finance/${id}`, {
+          method: 'DELETE',
+        });
+        alert(`${type === 'income' ? 'Income' : 'Expense'} record deleted successfully!`);
         fetchFinanceData();
       } catch (error) {
         console.error('Error deleting record:', error);
+        alert('Error deleting record. Please try again.');
       }
     }
   };
@@ -136,7 +169,6 @@ const FinanceManagement = () => {
         </button>
       </div>
 
-      {/* Finance Summary */}
       <div className="finance-summary">
         <div className="summary-card income">
           <div className="summary-icon">
@@ -171,7 +203,6 @@ const FinanceManagement = () => {
         </div>
       </div>
 
-      {/* Finance Tabs */}
       <div className="finance-tabs">
         <button 
           className={`tab-btn ${activeTab === 'income' ? 'active' : ''}`}
@@ -192,7 +223,6 @@ const FinanceManagement = () => {
         </button>
       </div>
 
-      {/* Add/Edit Form Modal */}
       {showForm && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -205,7 +235,7 @@ const FinanceManagement = () => {
                   setEditingRecord(null);
                   setFormData({
                     type: 'income',
-                    date: '',
+                    date: new Date().toISOString().split('T')[0],
                     name: '',
                     paymentMethod: 'M-pesa',
                     amount: '',
@@ -334,7 +364,7 @@ const FinanceManagement = () => {
                     setEditingRecord(null);
                     setFormData({
                       type: 'income',
-                      date: '',
+                      date: new Date().toISOString().split('T')[0],
                       name: '',
                       paymentMethod: 'M-pesa',
                       amount: '',
@@ -352,7 +382,6 @@ const FinanceManagement = () => {
         </div>
       )}
 
-      {/* Records Table */}
       <div className="finance-table">
         <table>
           <thead>
@@ -369,7 +398,7 @@ const FinanceManagement = () => {
           </thead>
           <tbody>
             {(activeTab === 'income' ? incomeRecords : expenseRecords).map((record) => (
-              <tr key={record.id}>
+              <tr key={record._id}>
                 <td>{new Date(record.date).toLocaleDateString()}</td>
                 <td>{record.name}</td>
                 <td>
@@ -391,12 +420,14 @@ const FinanceManagement = () => {
                   <button 
                     className="btn-edit"
                     onClick={() => handleEdit(record, activeTab)}
+                    title="Edit Record"
                   >
                     <i className="ri-edit-line"></i>
                   </button>
                   <button 
                     className="btn-delete"
-                    onClick={() => handleDelete(record.id, activeTab)}
+                    onClick={() => handleDelete(record._id, activeTab)}
+                    title="Delete Record"
                   >
                     <i className="ri-delete-bin-line"></i>
                   </button>

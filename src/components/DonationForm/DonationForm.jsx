@@ -449,13 +449,13 @@ const DonationForm = () => {
                     <p>Tuma kiasi cha <strong>{formatAmount(parseInt(formData.amount))}</strong> kupitia:</p>
                     <div className="mobile-payments">
                       <div className="mobile-option">
-                        <strong>M-Pesa:</strong> 0757 123 456
+                        <strong>M-Pesa:</strong> 0755 327 135
                       </div>
                       <div className="mobile-option">
-                        <strong>Tigo Pesa:</strong> 0657 123 456
+                        <strong>Lipa Mix-By-Yas:</strong> 19691543
                       </div>
                       <div className="mobile-option">
-                        <strong>Airtel Money:</strong> 0687 123 456
+                        <strong>Jina:</strong> USCF CCT TAKWIMU
                       </div>
                     </div>
                   </div>
@@ -464,8 +464,8 @@ const DonationForm = () => {
                   <div className="instructions">
                     <p>Weka akiba ya <strong>{formatAmount(parseInt(formData.amount))}</strong> kwenye akaunti:</p>
                     <div className="bank-details">
-                      <p><strong>Benki:</strong> CRDB Bank</p>
-                      <p><strong>Akaunti:</strong> 015235678900</p>
+                      <p><strong>Benki:</strong> NMB Bank</p>
+                      <p><strong>Akaunti:</strong> 20810039672</p>
                       <p><strong>Jina:</strong> USCF CCT TAKWIMU</p>
                     </div>
                   </div>
@@ -474,8 +474,8 @@ const DonationForm = () => {
                   <div className="instructions">
                     <p>Wasiliana na mhasibu wetu kwa mchango wa <strong>{formatAmount(parseInt(formData.amount))}</strong>:</p>
                     <div className="cash-details">
-                      <p><strong>Simu:</strong> +255 757 123 456</p>
-                      <p><strong>Mahali:</strong> Ofisi za USCF, Chuo cha Takwimu</p>
+                      <p><strong>Simu:</strong> +255 755 327 135</p>
+                      <p><strong>Mahali:</strong>  Changanyikeni, Chuo cha Takwimu (EASTC)</p>
                     </div>
                   </div>
                 )}
