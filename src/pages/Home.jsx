@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import Header from '../components/Header/Header';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -25,31 +25,34 @@ const Home = () => {
   const [showMoreContent, setShowMoreContent] = useState(false);
   const [activeTab, setActiveTab] = useState('popularPosts');
   const [churches, setChurches] = useState([]);
+  const navigate = useNavigate(); 
 
-  const slides = [
+const slides = [
     {
       image: boko,
       title: "Karibu USCF CCT TAKWIMU",
       text: "Jumuiya ya Wanafunzi wa Kikristo inayojenga viongozi wa kesho",
-      link: "/registration2",
-      linkText: "Jisajili Sasa"
+      link: "/#registration", // Changed to hash link
+      linkText: "Jisajili Sasa",
+      onClick: () => navigate('/registration2') // Added onClick for programmatic navigation
     },
     {
       image: slider3,
       title: "Huduma Zetu",
       text: "Ibada, Masomo ya Biblia, Uinjilisti na huduma nyinginezo",
-      link: "/services",
-      linkText: "Angalia Huduma"
+      link: "/#services", // Changed to hash link
+      linkText: "Angalia Huduma",
+      onClick: () => navigate('/services') // Added onClick for programmatic navigation
     },
     {
       image: mission,
       title: "Jiunge Nasi",
       text: "Unakaribishwa kujiunga na familia yetu ya Kikristo",
-      link: "/registration",
-      linkText: "Jisajili Sasa"
+      link: "/#join", // Changed to hash link
+      linkText: "Jisajili Sasa",
+      onClick: () => navigate('/registration') // Added onClick for programmatic navigation
     }
   ];
-
   const quickCards = [
     {
       icon: 'ri-store-3-line',

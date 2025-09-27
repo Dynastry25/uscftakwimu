@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ImageSlider.css';
 
 const ImageSlider = ({ slides }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -29,6 +31,14 @@ const ImageSlider = ({ slides }) => {
 
   const toggleAutoPlay = () => {
     setIsAutoPlaying(!isAutoPlaying);
+  };
+
+  const handleSlideClick = (slide) => {
+    if (slide.onClick) {
+      slide.onClick();
+    } else if (slide.link && slide.link.startsWith('/')) {
+      navigate(slide.link);
+    }
   };
 
   return (
@@ -58,16 +68,19 @@ const ImageSlider = ({ slides }) => {
                     </h2>
                   )}
                   {slide.text && (
-                    <p className="slide-text"  data-aos-delay="100">
+                    <p className="slide-text">
                       {slide.text}
                     </p>
                   )}
                   {slide.link && (
-                    <div  data-aos-delay="200">
-                      <a href={slide.link} className="slide-button">
+                    <div>
+                      <button 
+                        className="slide-button"
+                        onClick={() => handleSlideClick(slide)}
+                      >
                         {slide.linkText}
                         <i className="ri-arrow-right-line"></i>
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
